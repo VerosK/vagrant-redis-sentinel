@@ -7,19 +7,17 @@ Package{  allow_virtual => false }
 # set default
 Exec { path => [ "/bin/", "/sbin/" , "/usr/bin/", "/usr/sbin/" ] }
 
-# enable epel for now
+# enable epel for redis
 yumrepo {"epel":
-#  descr       => 'Extra Packages for Enterprise Linux 7 - $basearch',
-#  ensure      => present,
-#  mirrorlist  => 'https://mirrors.fedoraproject.org/metalink?repo=epel-7&arch=$basearch',
   enabled     => 1,
 }
 
 Yumrepo<| |> -> Package<| |>
 
 /* install random packages */
-package{["vim-enhanced", "psmisc", "htop"]:
-  ensure => present,
+package{["vim-enhanced", "psmisc", "htop", "nc"]:
+  ensure        => present,
+  allow_virtual => true,
 }
 
 /* stop CentOS 7 firewalld */
@@ -28,7 +26,7 @@ service {"firewalld":
   enable => false,
 }
 
-# set up redis on private network
+/* set up redis on private Vagrant network */
 $node_config = hiera('nodes')
 $redis_address = $node_config[$::hostname]['ip_addr']
 
@@ -54,6 +52,7 @@ class {"redis::sentinel":
   down_after => '5000',
   # for production, quorum should be 2!
   quorum     => 2,
+  # this is cluster name - which can be used
   master_name => 'my-cluster',
   redis_host => $master_address,
 }
