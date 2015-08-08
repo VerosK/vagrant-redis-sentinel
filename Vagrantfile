@@ -2,14 +2,14 @@
 # vim: set ft=ruby :
 
 MACHINES = {
-  :left => {
-        :ip_addr => '192.168.11.101',
+  'left' => {
+        'ip_addr' => '192.168.11.101',
   },
-  :right => {
-        :ip_addr => '192.168.11.102',
+  'right' => {
+        'ip_addr' => '192.168.11.102',
   },
-  :center => {
-        :ip_addr => '192.168.11.103',
+  'center' => {
+        'ip_addr' => '192.168.11.103',
   },
 }
 
@@ -27,7 +27,7 @@ Vagrant.configure("2") do |config|
           box.vm.box = 'vStone/centos-7.x-puppet.3.x'
           box.vm.host_name = boxname.to_s
 
-          box.vm.network "private_network", ip: boxconfig[:ip_addr]
+          box.vm.network "private_network", ip: boxconfig['ip_addr']
 
           box.vm.provider :virtualbox do |vb|
             vb.customize ["modifyvm", :id, "--memory", "1024"]
