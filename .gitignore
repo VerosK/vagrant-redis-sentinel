@@ -1,0 +1,6 @@
+.idea
+.vagrant
+# ignore paswords
+hiera/secrets.yaml
+# ignore nodes, these are generated every Vagrant run
+hiera/nodes.yaml
